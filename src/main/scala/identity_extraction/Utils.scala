@@ -1,17 +1,21 @@
 package identity_extraction
 
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
+import org.apache.spark.sql.functions.udf
 
-/**
-  * Created by lip on 1/20/19.
-  */
 object Utils {
 
+  def createLocalSparkSession(appName: String, numOfInstances: Int): SparkSession = {
+    val conf = new SparkConf().setAppName(appName).setMaster(s"local[$numOfInstances]")
+    SparkSession.builder().config(conf).getOrCreate()
+  }
+
   /**
-    * fill
-    * @param toBeFilled string with 6 `*` inside
-    * @param date: Date in YYYYMMDD format
+    * fill the toBeFilled with 6 `*`s inside, fill them with shorten date
+    * @param toBeFilled string with 6 `*`s inside
+    * @param date: Date in YYYYMMDD format and will be saved as YYMMDD
     * */
   def replaceSixStarsWithShortendDate(toBeFilled: String, date: String): String = {
     if(toBeFilled == null || date == null) "Abnormal"
@@ -30,4 +34,6 @@ object Utils {
       .option("header", "true")
       .save(file)
   }
+
+  val replaceHiddenyyDigitUdf = udf((id: String, dob: String) => replaceSixStarsWithShortendDate(id, dob))
 }
