@@ -1,6 +1,7 @@
 package learn_spark_ch2
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.SparkContext
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 
 object SimpleApp {
@@ -11,12 +12,16 @@ object SimpleApp {
 
     val spark = SparkSession.builder().appName("simple app").getOrCreate()
 
-    val logData = spark.read.textFile(logFile)
+    val logData: Dataset[String] = spark.read.textFile(logFile)
 
     val count = logData.count()
 
     println(count)
 
     spark.stop()
+
+    SparkContext.getOrCreate().parallelize(Seq(1))
+
+
   }
 }
