@@ -10,7 +10,8 @@ lazy val root = Project("LEARN-SPARK", file("."))
     organization := "LIP",
     scalaVersion := "2.12.4",
     libraryDependencies ++= Seq(
-      "org.apache.spark" %% "spark-sql" % "2.2.0"
+      "org.apache.spark" %% "spark-sql" % "2.2.0",
+      "org.apache.spark" %% "spark-streaming" % "2.4.0"
     )
   )
         
